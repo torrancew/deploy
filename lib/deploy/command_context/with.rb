@@ -30,9 +30,26 @@ module Deploy
         raise ArgumentError, "Expected a block" unless block_given?
         raise ArgumentError, "Args must be Hash" unless args.first.is_a?(Hash)
 
+        @block = block
         @environment = args.first
 
       end
+
+      def execute
+        sub_shell_pattern % @block.call.execute
+      end
+
+      private
+
+        def sub_shell_pattern
+          "( #{environment_string} %s )"
+        end
+
+        def environment_string
+          @environment.collect do |key, value|
+            "#{key.upcase}=\"#{value}\""
+          end.join(" ")
+        end
 
     end
 
