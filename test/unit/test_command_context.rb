@@ -3,7 +3,7 @@ require 'helper'
 module Deploy
   class TestCommandContext < UnitTest
   
-    def test_returning_the_correct_sub_command_context_class
+    def test_returning_the_correct_sub_command_context_class_for_in
 
       context = CommandContext.new(:in, "/example/directory", &lambda { })
 
@@ -14,6 +14,13 @@ module Deploy
 
     end
 
+    def test_returning_the_correct_sub_dommand_context_class_for_with
+
+      context = CommandContext.new(:with, {env: :hash}, &lambda { })
+
+      assert context.is_a? CommandContext::With
+    
+    end
+
   end
 end
-

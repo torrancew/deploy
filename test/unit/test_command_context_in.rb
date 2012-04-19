@@ -62,10 +62,6 @@ This command will now terminate the operation by returning false (man (1) false)
 
     end
 
-    def test_nesting_context_in_context_shorthand
-      skip "This probably needs the context to make sure the CommandContexts mix-in is mixed into the block binding on line #42 of CommandContext::In, somehow"
-    end
-
   end
 end
 

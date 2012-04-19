@@ -16,17 +16,21 @@ module Deploy
 
     def self.new(type, *args, &block)
       @type = type.to_sym
-      return appropriate_subclass.new(args, &block)
+      return appropriate_subclass.new(*args, &block)
     end
 
     private
 
       def self.appropriate_subclass
-        # TODO: Test me for the argument error condition
-        unless [:in].include?(@type.to_sym)
-          raise ArgumentError, "Type must be one of [:in]"
+        case @type
+          when :in
+            return CommandContext::In
+          when :with
+            return CommandContext::With
+          else
+            # TODO: Test me for the argument error condition
+            raise ArgumentError, "Type must be one of [:in, :with]"
         end
-        return CommandContext::In
       end
 
   end
