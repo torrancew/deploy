@@ -1,6 +1,8 @@
 require_relative 'stages'
 require_relative 'server_roles'
 require_relative 'command'
+require_relative 'command_context'
+require_relative 'command_context/in'
 require_relative 'dispatch'
 require_relative 'role'
 require_relative 'suite'
