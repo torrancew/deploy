@@ -3,8 +3,16 @@ module Deploy
     class In
 
       #
-      # Initializes a new "In" (Directory) [CommandContext] the new 
+      # Initializes a new "In" (Directory) [CommandContext].
       #
+      # Commands executed in this CommandContext will be wrapped inside a shell
+      # conditional check using `man (1) test` to ensure the intended directory
+      # exists before execution of the command; the case when the directory does
+      # not exist is handled by an else-case, printing a warning and returning 
+      # `man (1) false` under normal circumstances, this ensures that the task is
+      # halted, and any appropriate callbacks, rollbacks, etc are honored.
+      #
+      # @author Lee Hambley
       #
       def initialize(*args, &block)
         
@@ -22,8 +30,25 @@ module Deploy
       end
 
       #
+      # Format the [CommandContext::In] ready to be passed to a shell
+      # this executes the given block, and calls `execute` on the result
+      # the block given may contain other compliant [CommandContext]s,
+      # Commands and CommandResultModifiers
       # 
-      # 
+      # @author Lee Hambley
+      # @return [String] a shell prepared command
+      #
+      def execute
+        result = @block.call
+        sprintf "%s %s %s", command_prefix, result.execute, command_suffix
+      end
+
+      #
+      # The command prefix, made available predominently for testing
+      # this method has little value outside of manually composing command
+      # context strings for the test suite. One should use [execute] to more
+      # properly use this class.
+      #
       # @return [String] the shell command to prefix to the result of the given block
       #
       # @author Lee Hambley
@@ -32,6 +57,11 @@ module Deploy
         prefix_pattern % @directory
       end
 
+      #
+      # The command suffix, made afailable predominantly for testing
+      # this method has little value outside of manually composing command
+      # context strings for the test suite. One should use [execute] to more 
+      # properly use this class.
       #
       # @return [String] the shell command to  to the result of the given block
       #
@@ -44,7 +74,7 @@ module Deploy
       private
 
         def prefix_pattern
-          "if [ -d \"%s\" ]; then "
+          "if [ -d \"%s\" ]; then"
         end
 
         def error_message

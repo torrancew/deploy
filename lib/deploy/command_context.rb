@@ -22,7 +22,7 @@ module Deploy
     private
 
       def self.appropriate_subclass
-        # TODO: Test Me
+        # TODO: Test me for the argument error condition
         unless [:in].include?(@type.to_sym)
           raise ArgumentError, "Type must be one of [:in]"
         end
