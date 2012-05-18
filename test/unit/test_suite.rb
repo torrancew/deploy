@@ -5,6 +5,7 @@ module Deploy
 
     def setup
       @backend = TestBackend
+      Suite.output = $stdout
     end
     
     def test_new_suite_has_a_backend
@@ -33,6 +34,16 @@ module Deploy
       Dispatch.expects(:new).returns(dispatch)
       dispatch.expects(:work)
       Suite.new(@backend).run
+    end
+
+    def test_default_suite_output
+      assert_equal $stdout, Suite.output
+    end
+
+    def test_assiging_suite_output
+      stream = mock
+      Suite.output = stream
+      assert_equal stream, Suite.output
     end
   end
 end

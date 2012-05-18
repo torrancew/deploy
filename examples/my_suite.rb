@@ -1,4 +1,6 @@
 require_relative '../lib/deploy'
+require_relative '../lib/deploy/formatters/simple'
+
 module Deploy
   class MySuite < Suite
     include ApplicationServers::Unicorn

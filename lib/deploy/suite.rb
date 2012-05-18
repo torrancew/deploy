@@ -20,5 +20,15 @@ module Deploy
     def run
       @dispatch.work
     end
+
+    @@io = $stdout
+
+    def self.output
+      @@io
+    end
+
+    def self.output=(stream)
+      @@io = stream
+    end
   end
 end
